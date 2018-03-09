@@ -1,2 +1,2 @@
 # ponto-inteligente-api
-Api do Sistema de Ponto inteligente com Java e Sriong Boot
+API do sistema de ponto inteligente com Java e Spring Boot
