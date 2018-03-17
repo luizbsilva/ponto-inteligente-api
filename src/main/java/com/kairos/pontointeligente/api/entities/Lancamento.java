@@ -1,6 +1,7 @@
 package com.kairos.pontointeligente.api.entities;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -31,7 +32,7 @@ public class Lancamento {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data", nullable = false)
-	private LocalDate data;
+	private Date data;
 
 	@Column(name = "descricao", nullable = true)
 	private String descricao;
@@ -62,11 +63,11 @@ public class Lancamento {
 		this.id = id;
 	}
 
-	public LocalDate getData() {
+	public Date getData() {
 		return data;
 	}
 
-	public void setData(LocalDate data) {
+	public void setData(Date data) {
 		this.data = data;
 	}
 
