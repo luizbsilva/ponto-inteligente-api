@@ -24,7 +24,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.kairos.pontointeligente.api.enums.PerfilEnum;
-import com.kairos.pontointeligente.api.util.DateUtil;
+import com.kairos.pontointeligente.api.utils.DateUtil;
 
 @Entity
 @Table(name = "funcionario")

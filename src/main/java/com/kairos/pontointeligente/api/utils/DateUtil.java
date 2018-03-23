@@ -1,4 +1,4 @@
-package com.kairos.pontointeligente.api.util;
+package com.kairos.pontointeligente.api.utils;
 
 import java.text.DateFormat;
 import java.text.ParseException;

@@ -20,7 +20,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.kairos.pontointeligente.api.enums.TipoEnum;
-import com.kairos.pontointeligente.api.util.DateUtil;
+import com.kairos.pontointeligente.api.utils.DateUtil;
 
 @Entity
 @Table(name = "lancamento")

@@ -17,7 +17,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
-import com.kairos.pontointeligente.api.util.DateUtil;
+import com.kairos.pontointeligente.api.utils.DateUtil;
 
 @Entity
 @Table(name = "empresa")
