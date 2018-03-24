@@ -17,10 +17,10 @@ import com.kairos.pontointeligente.api.entities.Empresa;
 @SpringBootTest
 @ActiveProfiles("test")
 public class EmpresaRepositoryTest {
-	
+
 	@Autowired
 	private EmpresaRepository empresaRepository;
-	
+
 	private static final String CNPJ = "51463645000100";
 
 	@Before
@@ -30,16 +30,16 @@ public class EmpresaRepositoryTest {
 		empresa.setCnpj(CNPJ);
 		this.empresaRepository.save(empresa);
 	}
-	
+
 	@After
-    public final void tearDown() { 
+	public final void tearDown() {
 		this.empresaRepository.deleteAll();
 	}
 
 	@Test
 	public void testBuscarPorCnpj() {
 		Empresa empresa = this.empresaRepository.findByCnpj(CNPJ);
-		
+
 		assertEquals(CNPJ, empresa.getCnpj());
 	}
 
