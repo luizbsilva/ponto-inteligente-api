@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.kairos.pontointeligente.api.entities.Funcionario;
 
 public interface FuncionarioService {
+
 	/**
 	 * Persiste um funcionário na base de dados.
 	 * 
@@ -36,5 +37,4 @@ public interface FuncionarioService {
 	 * @return Optional<Funcionario>
 	 */
 	Optional<Funcionario> buscarPorId(Long id);
-
 }
