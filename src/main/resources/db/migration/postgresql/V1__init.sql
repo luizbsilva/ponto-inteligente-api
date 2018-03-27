@@ -6,21 +6,13 @@ CREATE TABLE empresa (
   razao_social varchar(255) NOT NULL
 );
 
-CREATE TABLE pessoa (
-  id_pessoa BIGINT NOT NULL,
+CREATE TABLE funcionario (
+  id_funcionario BIGINT NOT NULL,
+  id_empresa BIGINT DEFAULT NULL, 
   nome varchar(255) NOT NULL,
   cpf varchar(255) NOT NULL,
   email varchar(255) NOT NULL,
   senha varchar(255) NOT NULL,
-  data_atualizacao TIMESTAMP NOT NULL,
-  data_criacao TIMESTAMP NOT NULL,
-  razao_social varchar(255) NOT NULL
-);
-
-CREATE TABLE funcionario (
-  id_funcionario BIGINT NOT NULL,
-  id_pessoa BIGINT DEFAULT NULL,
-  id_empresa BIGINT DEFAULT NULL,
   data_atualizacao TIMESTAMP NOT NULL,
   data_criacao TIMESTAMP NOT NULL,
   perfil varchar(255) NOT NULL,
@@ -47,12 +39,6 @@ ALTER TABLE empresa
   ADD PRIMARY KEY (id_empresa);
 
 --
--- Indexes for table pessoa
---
-ALTER TABLE pessoa
-  ADD PRIMARY KEY (id_pessoa);
-  
---
 -- Indexes for table funcionario
 --
 ALTER TABLE funcionario
@@ -67,10 +53,8 @@ ALTER TABLE lancamento
 --
 -- Constraints for table funcionario
 --
-ALTER TABLE funcionario
-  ADD CONSTRAINT fk_pessoa_funcionario FOREIGN KEY (id_pessoa) REFERENCES pessoa (id_pessoa);
-  
-ALTER TABLE funcionario
+
+ ALTER TABLE funcionario
   ADD CONSTRAINT fk_funcionario_empresa FOREIGN KEY (id_empresa) REFERENCES empresa (id_empresa);
 
 --

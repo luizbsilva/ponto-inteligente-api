@@ -20,7 +20,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.kairos.pontointeligente.api.entities.Empresa;
 import com.kairos.pontointeligente.api.entities.Funcionario;
 import com.kairos.pontointeligente.api.entities.Lancamento;
-import com.kairos.pontointeligente.api.entities.Pessoa;
 import com.kairos.pontointeligente.api.enums.PerfilEnum;
 import com.kairos.pontointeligente.api.enums.TipoEnum;
 import com.kairos.pontointeligente.api.utils.PasswordUtils;
@@ -39,23 +38,13 @@ public class LancamentoRepositoryTest {
 	@Autowired
 	private EmpresaRepository empresaRepository;
 
-	@Autowired
-	private PessoaRepository pessoaRepository;
-
 	private Long funcionarioId;
-
-	private static final String EMAIL = "email@email.com";
-
-	private static final String CPF = "24291173474";
 
 	@Before
 	public void setUp() throws Exception {
 		Empresa empresa = this.empresaRepository.save(obterDadosEmpresa());
 
-		Pessoa pessoa = this.pessoaRepository.save(obterDadosPessoa());
-
-		Funcionario funcionario = this.funcionarioRepository.save(obterDadosFuncionario(empresa, pessoa));
-
+		Funcionario funcionario = this.funcionarioRepository.save(obterDadosFuncionario(empresa));
 		this.funcionarioId = funcionario.getId();
 
 		this.lancamentoRepository.save(obterDadosLancamentos(funcionario));
@@ -74,8 +63,8 @@ public class LancamentoRepositoryTest {
 		assertEquals(2, lancamentos.size());
 	}
 
-	@Test
 	@SuppressWarnings("deprecation")
+	@Test
 	public void testBuscarLancamentosPorFuncionarioIdPaginado() {
 		PageRequest page = new PageRequest(0, 10);
 		Page<Lancamento> lancamentos = this.lancamentoRepository.findByFuncionarioId(funcionarioId, page);
@@ -91,10 +80,13 @@ public class LancamentoRepositoryTest {
 		return lancameto;
 	}
 
-	private Funcionario obterDadosFuncionario(Empresa empresa, Pessoa pessoa) throws NoSuchAlgorithmException {
+	private Funcionario obterDadosFuncionario(Empresa empresa) throws NoSuchAlgorithmException {
 		Funcionario funcionario = new Funcionario();
-		funcionario.setPessoa(pessoa);
+		funcionario.setNome("Fulano de Tal");
 		funcionario.setPerfil(PerfilEnum.ROLE_USUARIO);
+		funcionario.setSenha(PasswordUtils.gerarBCrypt("123456"));
+		funcionario.setCpf("24291173474");
+		funcionario.setEmail("email@email.com");
 		funcionario.setEmpresa(empresa);
 		return funcionario;
 	}
@@ -104,16 +96,6 @@ public class LancamentoRepositoryTest {
 		empresa.setRazaoSocial("Empresa de exemplo");
 		empresa.setCnpj("51463645000100");
 		return empresa;
-	}
-
-	private Pessoa obterDadosPessoa() throws NoSuchAlgorithmException {
-		Pessoa pessoa = new Pessoa();
-		pessoa.setNome("Fulano de Tal");
-		pessoa.setSenha(PasswordUtils.gerarBCrypt("123456"));
-		pessoa.setCpf(CPF);
-		pessoa.setEmail(EMAIL);
-
-		return pessoa;
 	}
 
 }

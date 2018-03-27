@@ -23,30 +23,20 @@ import com.kairos.pontointeligente.api.utils.DateUtil;
 @Table(name = "empresa")
 public class Empresa implements Serializable {
 
-	private static final long serialVersionUID = 1340634818175039462L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+private static final long serialVersionUID = 3960436649365666213L;
+	
 	private Long id;
-
-	@Column(name = "razao_social", nullable = false)
 	private String razaoSocial;
-
-	@Column(name = "cnpj", nullable = false)
 	private String cnpj;
-
-	@Column(name = "data_criacao", nullable = false)
-	private LocalDate dataCriacao;
-
-	@Column(name = "data_atualizacao", nullable = false)
-	private LocalDate dataAtualizacao;
-
-	@OneToMany(mappedBy = "empresa", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Date dataCriacao;
+	private Date dataAtualizacao;
 	private List<Funcionario> funcionarios;
-
+	
 	public Empresa() {
 	}
 
+	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
 	public Long getId() {
 		return id;
 	}
@@ -55,6 +45,7 @@ public class Empresa implements Serializable {
 		this.id = id;
 	}
 
+	@Column(name = "razao_social", nullable = false)
 	public String getRazaoSocial() {
 		return razaoSocial;
 	}
@@ -63,6 +54,7 @@ public class Empresa implements Serializable {
 		this.razaoSocial = razaoSocial;
 	}
 
+	@Column(name = "cnpj", nullable = false)
 	public String getCnpj() {
 		return cnpj;
 	}
@@ -71,22 +63,25 @@ public class Empresa implements Serializable {
 		this.cnpj = cnpj;
 	}
 
-	public LocalDate getDataCriacao() {
+	@Column(name = "data_criacao", nullable = false)
+	public Date getDataCriacao() {
 		return dataCriacao;
 	}
 
-	public void setDataCriacao(LocalDate dataCriacao) {
+	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
 
-	public LocalDate getDataAtualizacao() {
+	@Column(name = "data_atualizacao", nullable = false)
+	public Date getDataAtualizacao() {
 		return dataAtualizacao;
 	}
 
-	public void setDataAtualizacao(LocalDate dataAtualizacao) {
+	public void setDataAtualizacao(Date dataAtualizacao) {
 		this.dataAtualizacao = dataAtualizacao;
 	}
 
+	@OneToMany(mappedBy = "empresa", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public List<Funcionario> getFuncionarios() {
 		return funcionarios;
 	}
@@ -97,12 +92,12 @@ public class Empresa implements Serializable {
 	
 	@PreUpdate
     public void preUpdate() {
-        dataAtualizacao = DateUtil.converteDateParaLocalDate(new Date());
+        dataAtualizacao = new Date();
     }
      
     @PrePersist
     public void prePersist() {
-        final LocalDate atual =  DateUtil.converteDateParaLocalDate(new Date());
+        final Date atual = new Date();
         dataCriacao = atual;
         dataAtualizacao = atual;
     }

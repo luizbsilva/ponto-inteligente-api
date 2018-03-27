@@ -1,6 +1,7 @@
 package com.kairos.pontointeligente.api.repositories;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -15,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.kairos.pontointeligente.api.entities.Empresa;
 import com.kairos.pontointeligente.api.entities.Funcionario;
-import com.kairos.pontointeligente.api.entities.Pessoa;
 import com.kairos.pontointeligente.api.enums.PerfilEnum;
 import com.kairos.pontointeligente.api.utils.PasswordUtils;
 
@@ -24,20 +24,11 @@ import com.kairos.pontointeligente.api.utils.PasswordUtils;
 @ActiveProfiles("test")
 public class FuncionarioRepositoryTest {
 
-	private static final String NOME_PESSOA = "Fulano de Tal";
-
 	@Autowired
 	private FuncionarioRepository funcionarioRepository;
 
 	@Autowired
 	private EmpresaRepository empresaRepository;
-
-	@Autowired
-	private PessoaRepository pessoaRepository;
-
-	private String nomeFuncionario;
-	
-	private Pessoa pessoaPesquisa;
 
 	private static final String EMAIL = "email@email.com";
 	private static final String CPF = "24291173474";
@@ -45,33 +36,56 @@ public class FuncionarioRepositoryTest {
 	@Before
 	public void setUp() throws Exception {
 		Empresa empresa = this.empresaRepository.save(obterDadosEmpresa());
-
-		Pessoa pessoa = this.pessoaRepository.save(obterDadosPessoa());
-		pessoaPesquisa = pessoa;
-
-		this.funcionarioRepository.save(obterDadosFuncionario(empresa, pessoa));
+		this.funcionarioRepository.save(obterDadosFuncionario(empresa));
 	}
 
 	@After
 	public final void tearDown() {
 		this.empresaRepository.deleteAll();
-		this.pessoaRepository.deleteAll();
-		
 	}
 
 	@Test
-	public void testBuscarFuncionarioPorCnpj() throws NoSuchAlgorithmException {
+	public void testBuscarFuncionarioPorEmail() {
+		Funcionario funcionario = this.funcionarioRepository.findByEmail(EMAIL);
 
-		Funcionario funcionario = this.funcionarioRepository.findByPessoa(pessoaPesquisa);
-		nomeFuncionario = funcionario.getPessoa().getNome();
-		
-		assertEquals(NOME_PESSOA, nomeFuncionario);
+		assertEquals(EMAIL, funcionario.getEmail());
 	}
 
-	private Funcionario obterDadosFuncionario(Empresa empresa, Pessoa pessoa) throws NoSuchAlgorithmException {
+	@Test
+	public void testBuscarFuncionarioPorCpf() {
+		Funcionario funcionario = this.funcionarioRepository.findByCpf(CPF);
+
+		assertEquals(CPF, funcionario.getCpf());
+	}
+
+	@Test
+	public void testBuscarFuncionarioPorEmailECpf() {
+		Funcionario funcionario = this.funcionarioRepository.findByCpfOrEmail(CPF, EMAIL);
+
+		assertNotNull(funcionario);
+	}
+
+	@Test
+	public void testBuscarFuncionarioPorEmailOuCpfParaEmailInvalido() {
+		Funcionario funcionario = this.funcionarioRepository.findByCpfOrEmail(CPF, "email@invalido.com");
+
+		assertNotNull(funcionario);
+	}
+
+	@Test
+	public void testBuscarFuncionarioPorEmailECpfParaCpfInvalido() {
+		Funcionario funcionario = this.funcionarioRepository.findByCpfOrEmail("12345678901", EMAIL);
+
+		assertNotNull(funcionario);
+	}
+
+	private Funcionario obterDadosFuncionario(Empresa empresa) throws NoSuchAlgorithmException {
 		Funcionario funcionario = new Funcionario();
-		funcionario.setPessoa(pessoa);
+		funcionario.setNome("Fulano de Tal");
 		funcionario.setPerfil(PerfilEnum.ROLE_USUARIO);
+		funcionario.setSenha(PasswordUtils.gerarBCrypt("123456"));
+		funcionario.setCpf(CPF);
+		funcionario.setEmail(EMAIL);
 		funcionario.setEmpresa(empresa);
 		return funcionario;
 	}
@@ -81,16 +95,6 @@ public class FuncionarioRepositoryTest {
 		empresa.setRazaoSocial("Empresa de exemplo");
 		empresa.setCnpj("51463645000100");
 		return empresa;
-	}
-
-	private Pessoa obterDadosPessoa() throws NoSuchAlgorithmException {
-		Pessoa pessoa = new Pessoa();
-		pessoa.setNome(NOME_PESSOA);
-		pessoa.setSenha(PasswordUtils.gerarBCrypt("123456"));
-		pessoa.setCpf(CPF);
-		pessoa.setEmail(EMAIL);
-
-		return pessoa;
 	}
 
 }

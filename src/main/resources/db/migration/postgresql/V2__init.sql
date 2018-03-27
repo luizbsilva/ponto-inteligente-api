@@ -7,28 +7,8 @@ CREATE SEQUENCE empresa_id_seq
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-  
---
--- AUTO_INCREMENT for table pessoa
---
-CREATE SEQUENCE pessoa_id_seq
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 1
-  CACHE 1;
-  
---
--- AUTO_INCREMENT for table funcionario
---
-CREATE SEQUENCE funcionario_id_seq
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 1
-  CACHE 1;
-  
---
+
+  --
 -- AUTO_INCREMENT for table lancamento
 --
 CREATE SEQUENCE lancamento_id_seq
